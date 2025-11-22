@@ -78,12 +78,7 @@ app.post('/run', async (req, res) => {
       body: JSON.stringify({
         language,
         version: config.version,
-        files: [
-          {
-            name: config.fileName,
-            content: source,
-          },
-        ],
+        files: [{ name: config.fileName, content: source }],
       }),
     });
     console.log(`[${new Date().toISOString()}] Piston API response status: ${response.status}`);
@@ -95,7 +90,6 @@ app.post('/run', async (req, res) => {
       return res.status(429).json({ error: 'Rate limit exceeded. Please wait and try again.' });
     }
 
-    // Broadcast output to all clients in the room
     const output = data.message
       ? `Error: ${data.message}`
       : (data.run?.stdout || '') + (data.run?.stderr || '') || 'No output';
@@ -109,25 +103,11 @@ app.post('/run', async (req, res) => {
   }
 });
 
-// Serve React build
-app.use(express.static(path.join(__dirname, 'dist')));
-app.use((req, res, next) => {
-  if (req.method === 'GET' && !req.path.startsWith('/socket.io')) {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  } else {
-    next();
-  }
-});
-
 // Socket logic
 const userSocketMap = {};
-
 function getAllConnectedClients(roomId) {
   return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
-    (socketId) => ({
-      socketId,
-      username: userSocketMap[socketId],
-    })
+    (socketId) => ({ socketId, username: userSocketMap[socketId] })
   );
 }
 
