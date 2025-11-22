@@ -25,7 +25,11 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = ['http://localhost:5173', 'https://seprate-code-editor.onrender.com'];
+       const allowedOrigins = [
+      'http://localhost:5173',
+      'https://seprate-code-editor.onrender.com',
+      'https://syncrafter.netlify.app' // <-- add this
+    ];
     console.log(`[${new Date().toISOString()}] CORS check for origin: ${origin}`);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, origin || '*');
