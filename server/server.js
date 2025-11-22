@@ -15,7 +15,7 @@ const server = http.createServer(app);
 // Configure Socket.IO with CORS
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173', 'https://syncraft.onrender.com'],
+    origin: ['http://localhost:5173', 'https://seprate-code-editor.onrender.com'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -25,7 +25,7 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = ['http://localhost:5173', 'https://syncraft.onrender.com'];
+    const allowedOrigins = ['http://localhost:5173', 'https://seprate-code-editor.onrender.com'];
     console.log(`[${new Date().toISOString()}] CORS check for origin: ${origin}`);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, origin || '*');
